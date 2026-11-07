@@ -1,0 +1,6 @@
+RBAC VULNERABILITY BASELINE
+Mon Nov  2 12:13:10 AM EST 2026
+---------------------------
+yes
+yes
+yes

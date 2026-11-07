@@ -1,0 +1,17 @@
+KUBERNETES POD SECURITY - HARDENED RESULTS
+Mon Nov  2 12:44:33 AM EST 2026
+------------------------------------------
+Pod status:
+NAME         READY   STATUS    RESTARTS   AGE
+secure-pod   1/1     Running   0          6m53s
+
+Container identity:
+uid=1000 gid=1000 groups=1000
+
+Read-only filesystem test:
+touch: /security-test: Read-only file system
+command terminated with exit code 1
+
+Security configuration:
+{"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}
+{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}

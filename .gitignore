@@ -1,0 +1,27 @@
+# Backups
+backups/
+
+# Credentials and secrets
+.env
+.env.*
+*.pem
+*.key
+*.p12
+*.pfx
+secrets/
+kubeconfig
+kubeconfig.*
+
+# Python environments
+.venv/
+venv/
+__pycache__/
+*.pyc
+
+# Logs and temporary files
+*.log
+*.tmp
+
+# OS files
+.DS_Store
+Thumbs.db

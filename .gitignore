@@ -1,27 +1,62 @@
-# Backups
+# Backups and archives
 backups/
+*.tar
+*.tar.gz
+*.tgz
+*.zip
 
 # Credentials and secrets
 .env
 .env.*
+!.env.example
+secrets/
+*.secret
+*.secrets
+secrets.yaml
+secrets.yml
+
+# Private keys and certificates
 *.pem
 *.key
 *.p12
 *.pfx
-secrets/
+*.crt
+*.cer
+*.der
+*.jks
+*.keystore
+
+# Kubernetes credentials
 kubeconfig
 kubeconfig.*
+.kube/
+admin.conf
+controller-manager.conf
+scheduler.conf
+
+# Cloud credentials
+.aws/
+.azure/
+.gcloud/
+credentials.json
+service-account.json
 
 # Python environments
 .venv/
 venv/
+env/
 __pycache__/
 *.pyc
 
 # Logs and temporary files
 *.log
 *.tmp
+*.swp
+*.swo
 
-# OS files
+# Operating system and IDE files
 .DS_Store
 Thumbs.db
+desktop.ini
+.vscode/
+.idea/

@@ -1,0 +1,2 @@
+NAME          READY   STATUS    RESTARTS   AGE     IP               NODE                           NOMINATED NODE   READINESS GATES
+falco-wz6wh   2/2     Running   0          8m27s   192.168.156.66   calico-cluster-control-plane   <none>           <none>

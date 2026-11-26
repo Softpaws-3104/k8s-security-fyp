@@ -1,0 +1,49 @@
+M8 - Falco Runtime Threat Detection Live Demonstration
+Date: 26 November 2026
+Cluster: calico-cluster
+Falco version: v0.45.2
+
+1. Shell execution detection
+
+Test command:
+kubectl exec -n k8s-net-test net-client -- sh -c 'id; whoami'
+
+Result:
+Falco generated a Warning alert:
+Rule: Shell Spawned in Container
+Command: sh -c id; whoami
+User: root
+Container: client
+Image: docker.io/library/busybox
+Pod: net-client
+Namespace: k8s-net-test
+Alert timestamp: 2026-11-26T09:58:54 UTC
+
+Status: PASS - Falco detected shell execution inside the container.
+
+2. Package-manager execution detection
+
+Test command:
+kubectl exec -n k8s-net-test net-client -- dpkg --version
+
+Container command result:
+BusyBox dpkg reported an unrecognized option '--version' and exited
+with code 1. This is expected for the BusyBox dpkg applet and does not
+indicate a Falco detection failure.
+
+Falco alert:
+Rule: Package Manager Executed in Container
+Priority: Warning
+Command: dpkg --version
+User: root
+Container: client
+Image: docker.io/library/busybox:1.36
+Pod: net-client
+Namespace: k8s-net-test
+Alert timestamp: 2026-11-26T10:00:32.041700875Z
+
+Status: PASS - Falco detected the package-manager process execution.
+
+Conclusion:
+Both custom Falco runtime detection rules were verified through live
+process execution inside the Kubernetes test container.

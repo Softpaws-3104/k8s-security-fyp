@@ -1,0 +1,38 @@
+M8 - Live Workload Security Context Verification
+Date: 26 November 2026
+Cluster: calico-cluster
+
+1. Hardened namespace: k8s-net-hardened
+
+Verified workloads:
+- net-client
+- net-server
+- unauthorized-client
+
+All three workloads confirmed:
+- automountServiceAccountToken: false
+- allowPrivilegeEscalation: false
+- capabilities.drop: ALL
+- readOnlyRootFilesystem: true
+
+2. PSA namespace: psa-lab
+
+Namespace labels:
+- pod-security.kubernetes.io/enforce=restricted
+- pod-security.kubernetes.io/audit=restricted
+- pod-security.kubernetes.io/warn=restricted
+
+PSA secure workload:
+- Pod: psa-secure-pod
+- allowPrivilegeEscalation: false
+- capabilities.drop: ALL
+- readOnlyRootFilesystem: true
+
+Note:
+Service-account token automount was not verified for psa-secure-pod.
+No claim is made that it is disabled.
+
+Conclusion:
+The live hardened workloads and PSA secure pod show the expected
+security-context settings. The hardened namespace workloads also
+explicitly disable service-account token automount.

@@ -1,0 +1,203 @@
+=== POD SECURITY ADMISSION: PRIVILEGED POD REJECTION ===
+Error from server (Forbidden): error when creating "vulnerable/psa-privileged-pod.yaml": pods "psa-privileged-test" is forbidden: violates PodSecurity "restricted:latest": privileged (container "test" must not set securityContext.privileged=true), allowPrivilegeEscalation != false (container "test" must set securityContext.allowPrivilegeEscalation=false), unrestricted capabilities (container "test" must set securityContext.capabilities.drop=["ALL"]), runAsNonRoot != true (pod or container "test" must set securityContext.runAsNonRoot=true), seccompProfile (pod or container "test" must set securityContext.seccompProfile.type to "RuntimeDefault" or "Localhost")
+
+=== HARDENED POD CONFIGURATION ===
+apiVersion: v1
+kind: Pod
+metadata:
+  annotations:
+    cni.projectcalico.org/containerID: 95430144a03398569c8e8de594bfafa0d75c4ac54d4f067600a1efca2b664c1a
+    cni.projectcalico.org/podIP: 192.168.156.101/32
+    cni.projectcalico.org/podIPs: 192.168.156.101/32
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"v1","kind":"Pod","metadata":{"annotations":{},"name":"psa-secure-pod","namespace":"psa-lab"},"spec":{"containers":[{"command":["sh","-c","sleep 3600"],"image":"busybox:1.36","name":"test","securityContext":{"allowPrivilegeEscalation":false,"capabilities":{"drop":["ALL"]},"readOnlyRootFilesystem":true}}],"securityContext":{"runAsGroup":1000,"runAsNonRoot":true,"runAsUser":1000,"seccompProfile":{"type":"RuntimeDefault"}}}}
+  creationTimestamp: "2026-11-10T07:48:21Z"
+  generation: 1
+  name: psa-secure-pod
+  namespace: psa-lab
+  resourceVersion: "32026"
+  uid: 65673925-b403-40c0-9eca-d83d8a253615
+spec:
+  containers:
+  - command:
+    - sh
+    - -c
+    - sleep 3600
+    image: busybox:1.36
+    imagePullPolicy: IfNotPresent
+    name: test
+    resources: {}
+    securityContext:
+      allowPrivilegeEscalation: false
+      capabilities:
+        drop:
+        - ALL
+      readOnlyRootFilesystem: true
+    terminationMessagePath: /dev/termination-log
+    terminationMessagePolicy: File
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-wqrjd
+      readOnly: true
+  dnsPolicy: ClusterFirst
+  enableServiceLinks: true
+  nodeName: calico-cluster-control-plane
+  preemptionPolicy: PreemptLowerPriority
+  priority: 0
+  restartPolicy: Always
+  schedulerName: default-scheduler
+  securityContext:
+    runAsGroup: 1000
+    runAsNonRoot: true
+    runAsUser: 1000
+    seccompProfile:
+      type: RuntimeDefault
+  serviceAccount: default
+  serviceAccountName: default
+  terminationGracePeriodSeconds: 30
+  tolerations:
+  - effect: NoExecute
+    key: node.kubernetes.io/not-ready
+    operator: Exists
+    tolerationSeconds: 300
+  - effect: NoExecute
+    key: node.kubernetes.io/unreachable
+    operator: Exists
+    tolerationSeconds: 300
+  volumes:
+  - name: kube-api-access-wqrjd
+    projected:
+      defaultMode: 420
+      sources:
+      - serviceAccountToken:
+          expirationSeconds: 3607
+          path: token
+      - configMap:
+          items:
+          - key: ca.crt
+            path: ca.crt
+          name: kube-root-ca.crt
+      - downwardAPI:
+          items:
+          - fieldRef:
+              apiVersion: v1
+              fieldPath: metadata.namespace
+            path: namespace
+status:
+  conditions:
+  - lastProbeTime: null
+    lastTransitionTime: "2026-11-26T07:02:40Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodReadyToStartContainers
+  - lastProbeTime: null
+    lastTransitionTime: "2026-11-10T07:48:21Z"
+    observedGeneration: 1
+    status: "True"
+    type: Initialized
+  - lastProbeTime: null
+    lastTransitionTime: "2026-11-26T08:40:20Z"
+    observedGeneration: 1
+    status: "True"
+    type: Ready
+  - lastProbeTime: null
+    lastTransitionTime: "2026-11-26T08:40:20Z"
+    observedGeneration: 1
+    status: "True"
+    type: ContainersReady
+  - lastProbeTime: null
+    lastTransitionTime: "2026-11-10T07:48:21Z"
+    observedGeneration: 1
+    status: "True"
+    type: PodScheduled
+  containerStatuses:
+  - containerID: containerd://9dc3be71f5ed3fb835ccaf469ea9f8ef87b388de87795aae8d2939ac4b919342
+    image: docker.io/library/busybox:1.36
+    imageID: docker.io/library/busybox@sha256:73aaf090f3d85aa34ee199857f03fa3a95c8ede2ffd4cc2cdb5b94e566b11662
+    lastState:
+      terminated:
+        containerID: containerd://9ba3f52e3686a702d190c8c2ba01b3707125f93de5d50bce93c49cf5433734fe
+        exitCode: 0
+        finishedAt: "2026-11-26T08:40:18Z"
+        reason: Completed
+        startedAt: "2026-11-26T07:02:40Z"
+    name: test
+    ready: true
+    resources: {}
+    restartCount: 14
+    started: true
+    state:
+      running:
+        startedAt: "2026-11-26T08:40:19Z"
+    user:
+      linux:
+        gid: 1000
+        supplementalGroups:
+        - 1000
+        uid: 1000
+    volumeMounts:
+    - mountPath: /var/run/secrets/kubernetes.io/serviceaccount
+      name: kube-api-access-wqrjd
+      readOnly: true
+      recursiveReadOnly: Disabled
+  hostIP: 172.18.0.2
+  hostIPs:
+  - ip: 172.18.0.2
+  observedGeneration: 1
+  phase: Running
+  podIP: 192.168.156.101
+  podIPs:
+  - ip: 192.168.156.101
+  qosClass: BestEffort
+  startTime: "2026-11-10T07:48:21Z"
+
+=== RBAC PERMISSION TESTS ===
+yes
+no
+no
+
+=== OVERPRIVILEGED BINDING CHECK ===
+Error from server (NotFound): clusterrolebindings.rbac.authorization.k8s.io "app-service-overprivileged" not found
+
+=== LEAST PRIVILEGE ROLE ===
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"Role","metadata":{"annotations":{},"name":"pod-reader","namespace":"rbac-lab"},"rules":[{"apiGroups":[""],"resources":["pods"],"verbs":["get","list","watch"]}]}
+  creationTimestamp: "2026-11-10T07:41:05Z"
+  name: pod-reader
+  namespace: rbac-lab
+  resourceVersion: "3827"
+  uid: b9dce466-3f5d-405a-998c-ab9f959ab1cf
+rules:
+- apiGroups:
+  - ""
+  resources:
+  - pods
+  verbs:
+  - get
+  - list
+  - watch
+
+=== ROLE BINDING ===
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  annotations:
+    kubectl.kubernetes.io/last-applied-configuration: |
+      {"apiVersion":"rbac.authorization.k8s.io/v1","kind":"RoleBinding","metadata":{"annotations":{},"name":"app-service-pod-reader","namespace":"rbac-lab"},"roleRef":{"apiGroup":"rbac.authorization.k8s.io","kind":"Role","name":"pod-reader"},"subjects":[{"kind":"ServiceAccount","name":"app-service","namespace":"rbac-lab"}]}
+  creationTimestamp: "2026-11-10T07:41:05Z"
+  name: app-service-pod-reader
+  namespace: rbac-lab
+  resourceVersion: "3828"
+  uid: 4a192d07-ad9b-4922-aaf2-883b46f454c4
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: pod-reader
+subjects:
+- kind: ServiceAccount
+  name: app-service
+  namespace: rbac-lab

@@ -1,270 +1,332 @@
-# Kubernetes Security: Vulnerability Assessment and Hardening
+\# Kubernetes Security: Vulnerability Assessment and Hardening
 
-A hands-on Kubernetes security project focused on identifying Kubernetes misconfigurations, testing vulnerabilities in an isolated laboratory, and implementing defensive security controls.
+A Kubernetes security project focused on identifying vulnerabilities, implementing security controls, hardening workloads, and monitoring runtime threats using Calico and Falco.
 
 ## Project Overview
 
-This project demonstrates practical Kubernetes security using Kali Linux, Kubernetes, Kind, Docker, and Calico.
+This project demonstrates a practical approach to securing a Kubernetes cluster. It covers network isolation, Role-Based Access Control (RBAC), Pod Security Admission (PSA), workload hardening, and runtime threat detection.
 
-The primary goal is to understand common Kubernetes security risks through controlled experiments and implement appropriate security mechanisms to protect workloads and cluster resources.
+The project uses a local Kubernetes cluster built with **Kind**, with **Calico** for network security and **Falco** for runtime threat detection.
 
-### Project Objectives
+## Project Objectives
 
-- Build an isolated Kubernetes security testing environment.
-- Implement network isolation using Calico NetworkPolicies.
-- Identify excessive Kubernetes permissions.
-- Apply Role-Based Access Control (RBAC).
-- Test Kubernetes Pod Security Admission (PSA).
+- Build and configure a Kubernetes environment.
+- Identify security weaknesses in Kubernetes workloads.
+- Implement network segmentation using Calico NetworkPolicies.
+- Configure RBAC using the principle of least privilege.
+- Enforce Pod Security Admission restricted standards.
 - Harden container workloads.
-- Validate security controls through practical experiments.
+- Deploy Falco for runtime threat detection.
+- Simulate security events and collect detection evidence.
+- Document security testing results and recommendations.
 
 ## Technology Stack
 
 | Technology | Purpose |
 |---|---|
-| Kali Linux | Security testing environment |
+| Kali Linux | Development and testing environment |
 | Kubernetes | Container orchestration |
 | Kind | Local Kubernetes cluster |
-| Docker | Container runtime |
-| kubectl | Kubernetes administration |
-| Calico | Container networking and NetworkPolicies |
-| YAML | Kubernetes resource configuration |
+| Calico | Container networking and NetworkPolicy enforcement |
+| Falco | Runtime security monitoring |
+| Docker / containerd | Container runtime |
+| kubectl | Kubernetes cluster management |
+| YAML | Kubernetes configuration |
+| Linux shell | Security testing and automation |
 | Git and GitHub | Version control and project hosting |
 
-## Project Architecture
-
-The project uses a local Kind Kubernetes cluster with Calico as the Container Network Interface (CNI).
-
-Separate Kubernetes namespaces are used to isolate security experiments and preserve vulnerable baseline configurations.
+## Architecture
 
 ```mermaid
 flowchart TD
-    A[Kali Linux] --> B[Docker]
-    B --> C[Kind Kubernetes Cluster]
-    C --> D[Calico CNI]
-    D --> E[k8s-net-test]
-    D --> F[k8s-net-hardened]
-    C --> G[rbac-lab]
-    C --> H[psa-lab]
-    E --> I[Vulnerable Network Workloads]
-    F --> J[Hardened Network Workloads]
-    G --> K[RBAC Security Tests]
-    H --> L[Pod Security Admission Tests]
+    A["Kali Linux"] --> B["Kind Kubernetes Cluster"]
+    B --> C["Calico CNI"]
+    B --> D["Kubernetes Workloads"]
+    B --> E["RBAC and Pod Security Admission"]
+    B --> F["Falco Runtime Monitoring"]
+    C --> G["Network Policy Enforcement"]
+    D --> H["Vulnerable and Hardened Pods"]
+    F --> I["Runtime Security Events"]
+    G --> J["Security Testing and Evidence"]
+    H --> J
+    E --> J
+    I --> J
 ```
 
-## Environment Details
+## Environment Configuration
 
-- Operating system: Kali Linux
-- Kubernetes distribution: Kind
-- Kubernetes version: v1.34.0
-- Container networking: Calico
-- Container runtime: containerd through Kind
+| Component | Configuration |
+|---|---|
+| Operating System | Kali Linux |
+| Cluster Platform | Kind |
+| Kubernetes Server | v1.34.0 |
+| Networking Plugin | Calico v3.33.0 |
+| Runtime Security | Falco v0.45.2 |
+| Container Runtime | containerd 2.1.3 |
+| Cluster Name | calico-cluster |
 
 ## Project Milestones
 
-### M1 – Kubernetes Environment Setup
+### M1 – Environment Setup <span>Completed</span>
 
-**Status: Completed**
+- Installed and configured the required Kubernetes tools.
+- Created a local Kubernetes cluster using Kind.
+- Verified cluster connectivity using kubectl.
+- Configured the cluster environment for security testing.
 
-- Configured Docker and Kubernetes tooling.
-- Created a local Kind cluster.
-- Configured Calico as the Container Network Interface.
-- Verified Kubernetes node readiness and system components.
+### M2 – Kubernetes Network Security <span>Completed</span>
 
-Configuration files:
-- `kind-config.yaml`
-- `kind-calico-config.yaml`
+- Installed Calico as the Container Network Interface (CNI).
+- Created a dedicated namespace for network testing.
+- Configured NetworkPolicies to control pod-to-pod communication.
+- Tested permitted and restricted network traffic.
+- Verified that unauthorized workloads could not access protected services.
 
-### M2 – Kubernetes Network Security
+### M3 – Role-Based Access Control (RBAC) <span>Completed</span>
 
-**Status: Completed**
+- Created Kubernetes ServiceAccounts.
+- Configured Roles and RoleBindings.
+- Implemented least-privilege access.
+- Verified allowed and denied Kubernetes API operations.
+- Tested restrictions on sensitive resources and workload creation.
 
-Implemented network isolation using Calico NetworkPolicies.
+### M4 – Vulnerability Assessment and Workload Hardening <span>Completed</span>
 
-Experiments:
-- Deployed client and server workloads.
-- Created a ClusterIP Service.
-- Applied default-deny ingress policies.
-- Allowed traffic from an authorized client.
-- Tested authorized and unauthorized connectivity.
+- Created vulnerable workload configurations for security assessment.
+- Identified insecure container settings.
+- Applied hardened Kubernetes configurations.
+- Configured security contexts.
+- Applied non-root execution, dropped Linux capabilities, disabled privilege escalation, and configured seccomp.
+- Tested Pod Security Admission restricted enforcement.
 
-**Result:** The authorized client successfully accessed the server, while the unauthorized client was blocked.
+### M5 – Falco Runtime Threat Detection <span>Completed</span>
 
-Baseline namespace: `k8s-net-test`.
+- Deployed Falco in the Kubernetes cluster.
+- Configured runtime monitoring.
+- Created custom Falco rules.
+- Detected shell execution inside containers.
+- Detected package manager process execution inside containers.
+- Collected runtime detection logs as evidence.
 
-### M3 – Role-Based Access Control (RBAC)
+### M6 – Attack Simulation and Detection <span>Completed</span>
 
-**Status: Completed**
+- Completed NetworkPolicy enforcement testing.
+- Verified authorized and unauthorized pod communication.
+- Tested restricted port access.
+- Verified Falco shell execution detection.
+- Verified Falco package manager process detection.
+- Tested Pod Security Admission restricted enforcement.
+- Verified RBAC least-privilege permissions.
+- Collected and committed security testing evidence.
 
-Evaluated Kubernetes permissions and demonstrated the risks of excessive privileges.
+### M7 – Security Assessment and Documentation <span>Pending</span>
 
-Experiments:
-- Created ServiceAccounts, Roles and RoleBindings.
-- Tested least-privilege pod-reader permissions.
-- Demonstrated an intentionally overprivileged RBAC configuration.
-- Tested access to pods, secrets and cluster resources.
-- Removed the dangerous cluster-admin binding.
-- Applied and validated least-privilege permissions.
+- Consolidate security testing results.
+- Analyze vulnerabilities and mitigation effectiveness.
+- Prepare the final assessment report.
+- Document project limitations and future improvements.
 
-**Result:** Hardened ServiceAccounts could access authorized pods but could not access secrets or perform unauthorized operations.
+### M8 – Final Demonstration and Submission <span>Pending</span>
 
-### M4 – Vulnerability Assessment and Workload Hardening
-
-**Status: Completed**
-
-Tested insecure pod configurations and implemented security controls.
-
-Security controls:
-- Kubernetes Pod Security Admission.
-- Restricted Pod Security Standards.
-- Non-root container execution (UID 1000).
-- Disabled privilege escalation.
-- Read-only root filesystem.
-- Dropped Linux capabilities.
-- RuntimeDefault seccomp profile.
-- Disabled automatic ServiceAccount token mounting.
-
-**Runtime verification:**
-
-| Security test | Hardened result |
-|---|---|
-| Container identity | UID 1000 |
-| Effective Linux capabilities | All dropped |
-| ServiceAccount token | Not mounted |
-| Root filesystem | Read-only |
-| Authorized network access | Allowed |
-| Unauthorized network access | Blocked |
-
-The original `k8s-net-test` namespace was preserved as the baseline. Hardened workloads were deployed separately in `k8s-net-hardened`.
+- Prepare the final project demonstration.
+- Verify the complete security environment.
+- Organize project documentation and evidence.
+- Prepare the final academic submission.
 
 ## Repository Structure
 
 ```text
 k8s-security-fyp/
-├── attack-scripts/
-├── backups/
-├── docs/
+│
+├── evidence/
+│   ├── m6-falco/
+│   │   ├── controlled-shell-detection.log
+│   │   └── package-manager-detection.log
+│   │
+│   ├── m6-network/
+│   │   └── network-policy-test-results.txt
+│   │
+│   └── m6-security/
+│       └── psa-rbac-hardening.txt
+│
 ├── falco/
+│   └── custom-rules.yaml
+│
 ├── hardened/
 │   ├── k8s-net-hardened-networking.yaml
 │   ├── k8s-net-hardened-workloads.yaml
 │   ├── least-privilege-rbac.yaml
 │   ├── psa-secure-pod.yaml
 │   └── secure-pod.yaml
+│
 ├── reports/
-├── screenshots/
+│
 ├── vulnerable/
 │   ├── insecure-pod.yaml
 │   ├── overprivileged-rbac.yaml
 │   ├── psa-privileged-pod.yaml
 │   └── psa-restricted-test.yaml
+│
 ├── kind-calico-config.yaml
 ├── kind-config.yaml
 ├── rbac-pod-reader.yaml
 ├── rbac-pod-reader-binding.yaml
+├── .gitignore
 └── README.md
 ```
 
-## Environment Requirements
+## Security Testing and Evidence
 
-- Kali Linux or a compatible Linux distribution.
-- Docker.
-- Kind.
-- kubectl.
-- Calico CNI.
-- Basic knowledge of Linux, Kubernetes, containers and YAML.
+### 1. NetworkPolicy Testing
+
+Network communication was tested between authorized and unauthorized workloads.
+
+| Test | Expected Result | Observed Result |
+|---|---|---|
+| Authorized client to server on TCP 8080 | Allowed | Successful |
+| Unauthorized client to server on TCP 8080 | Blocked | Timed out |
+| Authorized client to server on TCP 8081 | Blocked | Timed out |
+
+Evidence:
+
+`evidence/m6-network/network-policy-test-results.txt`
+
+### 2. Falco Runtime Detection
+
+Custom Falco rules were used to detect suspicious process execution inside containers.
+
+Detection scenarios:
+
+- Shell spawned inside a container.
+- Package manager process executed inside a container.
+
+Evidence:
+
+- `evidence/m6-falco/controlled-shell-detection.log`
+- `evidence/m6-falco/package-manager-detection.log`
+
+**Testing note:** The BusyBox `dpkg --version` test returned an error because the BusyBox applet did not support that option. Falco nevertheless detected the `dpkg` process execution. This confirms process detection, not successful package installation or package management.
+
+### 3. Pod Security Admission Testing
+
+A privileged pod was tested against the restricted Pod Security Admission profile.
+
+- The privileged test pod was rejected by the API server.
+- The hardened pod successfully ran with restricted security settings.
+- Security settings included non-root execution, disabled privilege escalation, dropped capabilities, read-only root filesystem, and RuntimeDefault seccomp.
+
+### 4. RBAC Testing
+
+The least-privilege ServiceAccount was tested.
+
+| Permission | Result |
+|---|---|
+| List pods | Allowed |
+| Get secrets | Denied |
+| Create pods | Denied |
+
+The overprivileged ClusterRoleBinding was confirmed absent.
+
+Evidence:
+
+`evidence/m6-security/psa-rbac-hardening.txt`
 
 ## Getting Started
 
-Clone the repository:
+### Prerequisites
+
+Install and configure:
+
+- Kali Linux
+- Docker
+- Kind
+- kubectl
+- Git
+
+### Clone the Repository
 
 ```bash
 git clone https://github.com/Softpaws-3104/k8s-security-fyp.git
 cd k8s-security-fyp
 ```
 
-Create the Kind cluster:
+### Create the Kind Cluster
+
+Use the repository's Kind configuration:
 
 ```bash
-kind create cluster --config kind-calico-config.yaml
+kind create cluster --name calico-cluster --config kind-calico-config.yaml
 ```
 
-Install a compatible Calico CNI version by following the [official Calico documentation](https://docs.tigera.io/calico/latest/getting-started/kubernetes/kind).
+### Install Calico
 
-Verify the cluster:
+Follow the official Calico installation instructions:
+
+https://docs.tigera.io/calico/latest/getting-started/kubernetes/kind
+
+### Verify the Cluster
 
 ```bash
 kubectl get nodes
 kubectl get pods -A
+kubectl get networkpolicies -A
+kubectl get roles,rolebindings -A
+kubectl get pods -n falco
 ```
 
-Inspect hardened workloads:
+**Note:** These commands describe the environment setup and inspection process. Apply project manifests according to their intended purpose. Do not apply vulnerable test manifests to a production cluster.
 
-```bash
-kubectl get pods -n k8s-net-hardened
-kubectl get networkpolicies -n k8s-net-hardened
-```
+## Security Recommendations
 
-Inspect RBAC:
-
-```bash
-kubectl get roles,rolebindings -n rbac-lab
-```
-
-Inspect Pod Security Admission:
-
-```bash
-kubectl get namespace psa-lab --show-labels
-kubectl get pods -n psa-lab
-```
-
-These commands inspect existing experiments. They do not automatically recreate all laboratory resources.
-
-## Security Reports
-
-Detailed experiment evidence is available in the `reports/` directory.
-
-Reports cover:
-
-- Network workload hardening.
-- RBAC overprivilege assessment.
-- Pod Security Admission enforcement.
-- Vulnerable and hardened pod comparisons.
-- Runtime security verification.
+- Apply least-privilege RBAC permissions.
+- Avoid privileged containers unless strictly required.
+- Run containers as non-root users.
+- Disable privilege escalation.
+- Drop unnecessary Linux capabilities.
+- Enforce Pod Security Admission restricted policies.
+- Use NetworkPolicies to restrict unnecessary communication.
+- Monitor container activity using runtime security tools.
+- Regularly review Kubernetes configuration and security logs.
 
 ## Future Scope
 
-The next planned development phase is Kubernetes security monitoring and detection.
+Potential improvements include:
 
-Potential extensions include:
-
-- Falco-based runtime threat detection.
-- Monitoring suspicious container activity.
-- Detecting unauthorized Kubernetes API operations.
-- Security alert generation.
-- Attack simulation and detection validation.
-- Centralized security reporting.
-
-These features are planned extensions and are not currently claimed as completed.
+- Automated security testing.
+- Integration with centralized logging and alerting.
+- Additional Falco detection rules.
+- CI/CD security scanning.
+- Automated vulnerability assessment.
+- Integration with security monitoring platforms.
+- Expanded attack simulation scenarios.
 
 ## Security Disclaimer
 
-This repository contains intentionally vulnerable Kubernetes manifests for educational security testing.
-
-Use vulnerable configurations only in an isolated, authorized laboratory environment.
-
-Never deploy vulnerable manifests in production or publicly accessible clusters.
-
-This project is intended for learning, research, security assessment and defensive Kubernetes hardening.
+This project is intended for educational and authorized security testing purposes only. Vulnerable configurations and attack simulations should be used exclusively in controlled environments.
 
 ## Author
 
 **Madhur Kanoje**
 
-B.Tech - Computer Science and Engineering
+B.Tech Computer Science and Engineering
 
 GitHub: [Softpaws-3104](https://github.com/Softpaws-3104)
 
+Repository: [Kubernetes Security FYP](https://github.com/Softpaws-3104/k8s-security-fyp)
+
 ---
 
-**Project Status:** M1–M4 completed. Security monitoring and detection are planned for the next development phase.
+## Project Status
+
+| Milestone | Status |
+|---|---|
+| M1 – Environment Setup | Completed |
+| M2 – Network Security | Completed |
+| M3 – RBAC | Completed |
+| M4 – Vulnerability Assessment and Hardening | Completed |
+| M5 – Falco Runtime Detection | Completed |
+| M6 – Attack Simulation and Detection | Completed |
+| M7 – Security Assessment and Documentation | Pending |
+| M8 – Final Demonstration and Submission | Pending |
+
+**Current focus:** M7 – Security Assessment and Documentation.

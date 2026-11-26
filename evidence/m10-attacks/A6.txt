@@ -1,0 +1,33 @@
+M10 - A6: Sensitive File Access Detection
+Date of original test: 22 November 2026
+
+Objective:
+Verify whether Falco detects access to sensitive files inside a container.
+
+Test environment:
+Namespace: k8s-net-test
+Pod: net-client
+Container: client
+File accessed: /etc/shadow
+Process: cat
+
+Falco detection:
+Rule: Read sensitive file untrusted
+Priority: Warning
+Event type: openat
+Detection source: syscall
+Result: DETECTED
+
+Evidence source:
+reports/falco-runtime-detection.log
+
+The original Falco evidence contains two Warning alerts for
+attempted reads of /etc/shadow by the cat process inside net-client.
+
+Conclusion:
+Falco successfully detected sensitive-file access inside the
+container and generated runtime security alerts.
+
+Note:
+This evidence reuses the M5 detection test. The test was not
+repeated during M10.

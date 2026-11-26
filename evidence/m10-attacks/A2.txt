@@ -1,0 +1,10 @@
+=== A2: Service Account RBAC authorization test ===
+
+[1] Can list pods in k8s-net-test?
+yes
+
+[2] Can read secrets in k8s-net-test?
+no
+
+[3] Can list namespaces cluster-wide?
+no

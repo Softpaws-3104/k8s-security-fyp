@@ -1,0 +1,30 @@
+M10 - A5: Secret Access Authorization Test
+Date: 27 November 2026
+
+Objective:
+Verify that the test-reader ServiceAccount cannot access Kubernetes Secrets.
+
+Test Secret:
+Name: m10-dummy-secret
+Namespace: k8s-net-test
+Data: Harmless dummy value only
+
+Authorization test:
+kubectl auth can-i get secrets -n k8s-net-test \
+  --as=system:serviceaccount:k8s-net-test:test-reader
+
+Result:
+no
+
+Related RBAC test from A2:
+Listing Pods: yes
+Reading Secrets: no
+
+Conclusion:
+The test-reader ServiceAccount is restricted from reading Secrets
+in its namespace. This confirms the intended least-privilege RBAC
+configuration. No real credentials or Secret values were accessed.
+
+Note:
+The authorization check uses Kubernetes identity impersonation;
+it does not extract or use a ServiceAccount token.

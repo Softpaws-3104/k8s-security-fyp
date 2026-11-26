@@ -1,0 +1,19 @@
+=== Unauthorized client to local server ===
+wget: download timed out
+command terminated with exit code 1
+Exit code: 1
+
+=== Authorized client test ===
+k8s-net-test/net-client -> net-server:8080
+Result: SUCCESS
+
+=== Cross-namespace test ===
+k8s-net-test/net-client -> k8s-net-hardened/net-server:8080
+Result: TIMEOUT / BLOCKED
+
+=== NetworkPolicy summary ===
+NAMESPACE          NAME                     POD-SELECTOR     AGE
+k8s-net-hardened   allow-client-to-server   app=net-server   16d
+k8s-net-hardened   deny-server-ingress      app=net-server   16d
+k8s-net-test       allow-client-to-server   app=net-server   16d
+k8s-net-test       deny-server-ingress      app=net-server   16d

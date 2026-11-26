@@ -1,0 +1,31 @@
+M10 - A1: Kubernetes API reconnaissance
+Fri Nov 27 04:03:57 AM IST 2026
+
+=== Local API port scan ===
+Starting Nmap 7.99 ( https://nmap.org ) at 2026-11-27 04:03 +0530
+Nmap scan report for localhost (127.0.0.1)
+Host is up (0.00013s latency).
+
+PORT      STATE SERVICE
+38443/tcp open  unknown
+
+Nmap done: 1 IP address (1 host up) scanned in 0.03 seconds
+
+=== Unauthenticated Kubernetes API request ===
+HTTP status: 200
+
+=== Protected API endpoint without credentials ===
+HTTP status: 403
+Response:
+{
+  "kind": "Status",
+  "apiVersion": "v1",
+  "metadata": {},
+  "status": "Failure",
+  "message": "namespaces is forbidden: User \"system:anonymous\" cannot list resource \"namespaces\" in API group \"\" at the cluster scope",
+  "reason": "Forbidden",
+  "details": {
+    "kind": "namespaces"
+  },
+  "code": 403
+}

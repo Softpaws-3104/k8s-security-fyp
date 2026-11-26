@@ -1,0 +1,27 @@
+M8 - Live NetworkPolicy Demonstration
+Date: 26 November 2026
+Namespace: k8s-net-test
+
+Test 1: Authorized client -> net-server:8080
+Command:
+kubectl exec -n k8s-net-test net-client -- wget -qO- --timeout=5 http://net-server:8080
+Observed result:
+Kubernetes networking test successful
+Status: PASS
+
+Test 2: Unauthorized client -> net-server:8080
+Command:
+kubectl exec -n k8s-net-test unauthorized-client -- wget -qO- --timeout=5 http://net-server:8080
+Observed result:
+wget: download timed out
+Status: PASS - unauthorized traffic blocked
+
+Test 3: Authorized client -> net-server:8081
+Command:
+kubectl exec -n k8s-net-test net-client -- wget -qO- --timeout=5 http://net-server:8081
+Observed result:
+wget: download timed out
+Status: PASS - unapproved port blocked
+
+Conclusion:
+Only the authorized client could access the server on TCP port 8080.

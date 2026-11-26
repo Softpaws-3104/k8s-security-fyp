@@ -116,22 +116,30 @@ flowchart TD
 - Verified Falco shell execution detection.
 - Verified Falco package manager process detection.
 - Tested Pod Security Admission restricted enforcement.
-- Verified RBAC least-privilege permissions.
+- Verified RBAC least privilege permissions.
 - Collected and committed security testing evidence.
 
-### M7 – Security Assessment and Documentation <span>Pending</span>
+### M7 – Security Assessment and Documentation <span>Completed</span>
 
-- Consolidate security testing results.
-- Analyze vulnerabilities and mitigation effectiveness.
-- Prepare the final assessment report.
-- Document project limitations and future improvements.
+- Consolidated security testing results from M1–M6.
+- Analyzed vulnerabilities and mitigation effectiveness.
+- Prepared the final Kubernetes security assessment report.
+- Documented project limitations and future improvements.
+- Committed the final assessment report to the repository.
 
-### M8 – Final Demonstration and Submission <span>Pending</span>
+Report: `reports/final-kubernetes-security-assessment.md`
 
+### M8 – Final Demonstration and Submission <span>In Progress</span>
+
+- Verified the Kubernetes cluster and security components.
+- Demonstrated authorized and unauthorized NetworkPolicy traffic.
+- Verified Falco shell execution detection.
+- Verified Falco package manager process detection.
+- Verified hardened workload security contexts.
+- Verified Pod Security Admission and RBAC configurations.
+- Organized and committed live demonstration evidence.
 - Prepare the final project demonstration.
-- Verify the complete security environment.
-- Organize project documentation and evidence.
-- Prepare the final academic submission.
+- Complete final academic submission documentation.
 
 ## Repository Structure
 
@@ -146,8 +154,13 @@ k8s-security-fyp/
 │   ├── m6-network/
 │   │   └── network-policy-test-results.txt
 │   │
-│   └── m6-security/
-│       └── psa-rbac-hardening.txt
+│   ├── m6-security/
+│   │   └── psa-rbac-hardening.txt
+│   │
+│   └── m8-demo/
+│       ├── network-policy-live-demo.txt
+│       ├── falco-runtime-live-demo.txt
+│       └── workload-security-context-verification.txt
 │
 ├── falco/
 │   └── custom-rules.yaml
@@ -160,6 +173,7 @@ k8s-security-fyp/
 │   └── secure-pod.yaml
 │
 ├── reports/
+│   └── final-kubernetes-security-assessment.md
 │
 ├── vulnerable/
 │   ├── insecure-pod.yaml
@@ -174,7 +188,6 @@ k8s-security-fyp/
 ├── .gitignore
 └── README.md
 ```
-
 ## Security Testing and Evidence
 
 ### 1. NetworkPolicy Testing
@@ -326,7 +339,7 @@ Repository: [Kubernetes Security FYP](https://github.com/Softpaws-3104/k8s-secur
 | M4 – Vulnerability Assessment and Hardening | Completed |
 | M5 – Falco Runtime Detection | Completed |
 | M6 – Attack Simulation and Detection | Completed |
-| M7 – Security Assessment and Documentation | Pending |
-| M8 – Final Demonstration and Submission | Pending |
+| M7 – Security Assessment and Documentation | Completed |
+| M8 – Final Demonstration and Submission | In Progress |
 
-**Current focus:** M7 – Security Assessment and Documentation.
+**Current focus:** M8 – Final Demonstration and Submission.

@@ -1,0 +1,29 @@
+M6 - Kubernetes NetworkPolicy Attack Simulation
+Namespace: k8s-net-test
+
+Server:
+  Pod: net-server
+  IP: 192.168.156.89
+  Port: TCP 8080
+
+Test 1: Authorized client
+  Source: net-client (app=net-client)
+  Destination: net-server:8080
+  Result: PASS
+  Response: Kubernetes networking test successful
+
+Test 2: Unauthorized client
+  Source: unauthorized-client (app=unauthorized-client)
+  Destination: net-server:8080
+  Result: PASS - traffic blocked
+  Response: wget download timed out
+
+Test 3: Unauthorized port
+  Source: net-client
+  Destination: net-server:8081
+  Result: PASS - traffic blocked
+  Response: wget download timed out
+
+Conclusion:
+NetworkPolicy enforcement was verified.
+Only the selected client could access the server on TCP port 8080.
